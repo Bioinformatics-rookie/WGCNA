@@ -1,13 +1,13 @@
 rm(list = ls())
 setwd("D:/data/wgcna/Categorical/")
-options(stringsAsFactors = F)
+options(stringsAsFactors = T)
 load('GSE48213-wgcna-input.RData')
 library(WGCNA)
 enableWGCNAThreads()
 
 ##====================step 1:数据读入=====
 
-RNAseq_voom <- fpkm 
+RNAseq_voom <- fpkm
 
 # 因为WGCNA针对的是基因进行聚类，而一般我们的聚类是针对样本用hclust即可，所以这个时候需要转置
 WGCNA_matrix = t(RNAseq_voom[order(apply(RNAseq_voom,1,mad), decreasing = T)[1:5000],])
@@ -21,7 +21,7 @@ nSamples = nrow(datExpr)
 datExpr_tree<-hclust(dist(datExpr), method = "average")
 par(mar = c(0,5,2,0))
 png("img/step1-sample-cluster.png",width = 800,height = 600)
-plot(datExpr_tree, main = "Sample clustering", sub="", xlab="", cex.lab = 2, 
+plot(datExpr_tree, main = "Sample clustering", sub="", xlab="", cex.lab = 2,
        cex.axis = 1, cex.main = 1,cex.lab=1)
 dev.off()
 
@@ -60,7 +60,7 @@ net = blockwiseModules(
   deepSplit = 2, minModuleSize = 30,     #剪切树参数，deepSplit取值0-4
   mergeCutHeight = 0.25,                 # 模块合并参数，越大模块越少
   numericLabels = TRUE,                             # T返回数字，F返回颜色
-  pamRespectsDendro = FALSE,  
+  pamRespectsDendro = FALSE,
   saveTOMs = TRUE,
   saveTOMFileBase = "FPKM-TOM",
   loadTOMs = TRUE,
@@ -82,7 +82,7 @@ plotDendroAndColors(net$dendrograms[[1]], mergedColors[net$blockGenes[[1]]],
                     dendroLabels = FALSE, hang = 0.03,
                     addGuide = TRUE, guideHang = 0.05)
 dev.off()
-## assign all of the gene to their corresponding module 
+## assign all of the gene to their corresponding module
 ## hclust for the genes.
 
 
@@ -93,11 +93,11 @@ nSamples = nrow(datExpr)
 #首先针对样本做个系统聚类
 datExpr_tree<-hclust(dist(datExpr), method = "average")
 par(mar = c(0,5,2,0))
-plot(datExpr_tree, main = "Sample clustering", sub="", xlab="", cex.lab = 2, 
+plot(datExpr_tree, main = "Sample clustering", sub="", xlab="", cex.lab = 2,
      cex.axis = 1, cex.main = 1,cex.lab=1)
 ## 如果这个时候样本是有性状，或者临床表型的，可以加进去看看是否聚类合理
 #针对前面构造的样品矩阵添加对应颜色
-sample_colors <- numbers2colors(as.numeric(factor(datTraits$subtype)), 
+sample_colors <- numbers2colors(as.numeric(factor(datTraits$subtype)),
                                 colors = c("white","blue","red","green"),signed = FALSE)
 ## 这个给样品添加对应颜色的代码需要自行修改以适应自己的数据分析项目
 #  sample_colors <- numbers2colors( datTraits ,signed = FALSE)
@@ -171,7 +171,7 @@ for(module in substring(colnames(MEs),3)){
   par(mfrow=c(2,1),mar=c(0.3,5.5,3,2))
   plotMat(t(scale(datExpr[,moduleColors==module])),
           rlabels=F,main=module,cex.main=2,clabels=F)
-  
+
   par(mar=c(5,4.2,0,0.7))
   barplot(ME,col=module,main="",cex.main=2,ylab="eigengene expression",xlab="sample")
   dev.off()
@@ -195,8 +195,8 @@ MMPvalue = as.data.frame(corPvalueStudent(as.matrix(geneModuleMembership), nSamp
 names(geneModuleMembership) = paste("MM", modNames, sep="");
 names(MMPvalue) = paste("p.MM", modNames, sep="");
 geneModuleMembership[1:4,1:4]
-  
-  
+
+
 ## 只有连续型性状才能只有计算
 ## 这里把是否属 Luminal 表型这个变量0,1进行数值化
 Luminal = as.data.frame(design[,3]);
@@ -205,7 +205,7 @@ geneTraitSignificance = as.data.frame(cor(datExpr, Luminal, use = "p"));
 GSPvalue = as.data.frame(corPvalueStudent(as.matrix(geneTraitSignificance), nSamples));
 names(geneTraitSignificance) = paste("GS.", names(Luminal), sep="");
 names(GSPvalue) = paste("p.GS.", names(Luminal), sep="");
-  
+
 module = "pink"
 column = match(module, modNames);
 moduleGenes = moduleColors==module;
@@ -219,7 +219,7 @@ verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                      main = paste("Module membership vs. gene significance\n"),
                      cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2, col = module)
 dev.off()
-  
+
 # Recalculate module eigengenes
 MEs = moduleEigengenes(datExpr, moduleColors)$eigengenes
 ## 只有连续型性状才能只有计算
@@ -230,13 +230,13 @@ names(Luminal) = "Luminal"
 MET = orderMEs(cbind(MEs, Luminal))
 # Plot the relationships among the eigengenes and the trait
 sizeGrWindow(5,7.5);
-  
+
 par(cex = 0.9)
 png("img/step6-Eigengene-dendrogram.png",width = 800,height = 600)
 plotEigengeneNetworks(MET, "", marDendro = c(0,4,1,2), marHeatmap = c(3,4,1,2), cex.lab = 0.8, xLabelsAngle
                         = 90)
 dev.off()
-  
+
 # Plot the dendrogram
 sizeGrWindow(6,6);
 par(cex = 1.0)
@@ -248,14 +248,14 @@ dev.off()
 # Plot the heatmap matrix (note: this plot will overwrite the dendrogram plot)
 par(cex = 1.0)
 ## 性状与模块热
-  
+
 png("img/step6-Eigengene-adjacency-heatmap.png",width = 800,height = 600)
 plotEigengeneNetworks(MET, "Eigengene adjacency heatmap", marHeatmap = c(3,4,2,2),
                         plotDendrograms = FALSE, xLabelsAngle = 90)
 dev.off()
 
 
-##===============================step 7:网络的可视化==== 
+##===============================step 7:网络的可视化====
 # 主要是可视化 TOM矩阵，WGCNA的标准配图
 # 然后可视化不同 模块 的相关性 热图
 # 不同模块的层次聚类图
@@ -263,10 +263,10 @@ dev.off()
 
 nGenes = ncol(datExpr)
 nSamples = nrow(datExpr)
-geneTree = net$dendrograms[[1]]; 
-dissTOM = 1-TOMsimilarityFromExpr(datExpr, power = 6); 
-plotTOM = dissTOM^7; 
-diag(plotTOM) = NA; 
+geneTree = net$dendrograms[[1]];
+dissTOM = 1-TOMsimilarityFromExpr(datExpr, power = 6);
+plotTOM = dissTOM^7;
+diag(plotTOM) = NA;
 #TOMplot(plotTOM, geneTree, moduleColors, main = "Network heatmap plot, all genes")
 nSelect = 400
 # For reproducibility, we set the random seed
@@ -282,18 +282,18 @@ sizeGrWindow(9,9)
 # the color palette; setting the diagonal to NA also improves the clarity of the plot
 plotDiss = selectTOM^7;
 diag(plotDiss) = NA;
-  
+
 png("img/step7-Network-heatmap.png",width = 800,height = 600)
   TOMplot(plotDiss, selectTree, selectColors, main = "Network heatmap plot, selected genes")
 dev.off()
-  
+
 
 
 ##===============================step 8：模块导出 =========
 # 导出模块内部基因的连接关系，进入其它可视化软件
 # 比如 cytoscape软件等等。
 # Recalculate topological overlap
-TOM = TOMsimilarityFromExpr(datExpr, power = 6); 
+TOM = TOMsimilarityFromExpr(datExpr, power = 6);
 # Select module
 module = "pink";
 # Select module probes
@@ -311,14 +311,6 @@ cyt = exportNetworkToCytoscape(
     nodeFile = paste("CytoscapeInput-nodes-", paste(module, collapse="-"), ".txt", sep=""),
     weighted = TRUE,
     threshold = 0.02,
-    nodeNames = modProbes, 
+    nodeNames = modProbes,
     nodeAttr = moduleColors[inModule]
 )
-
-
-
-
-
-
-
-
