@@ -314,3 +314,21 @@ cyt = exportNetworkToCytoscape(
     nodeNames = modProbes,
     nodeAttr = moduleColors[inModule]
 )
+
+
+##也可以将全部的模块导出至cytoscape
+## for(module in substring(colnames(MEs),3)){
+##if(module == "grey") next
+##probes = colnames(datExpr)
+##inModule = is.finite(match(moduleColors, module))
+##modProbes = probes[inModule]
+##modTOM = TOM[inModule, inModule]
+##dimnames(modTOM) = list(modProbes, modProbes)
+##cyt = exportNetworkToCytoscape(modTOM,
+##                               edgeFile = paste("CytoscapeInput-edges-", module, ".txt", sep=""),
+##                               nodeFile = paste("CytoscapeInput-nodes-", module, ".txt", sep=""),
+##                               weighted = TRUE,
+##                               threshold = 0.02,
+##                               nodeNames = modProbes,
+##                               nodeAttr = moduleColors[inModule])
+##}
