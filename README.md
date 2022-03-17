@@ -465,6 +465,6 @@ cyt = exportNetworkToCytoscape(
 
 # 后记
 
-本次WGCNA的代码结合了生信技能树和PlantTech的WGCNA教程，原始数据也来自这两个教程，其中PlantTech课程是收费课程，我已将其下载，大家有需要可以去百度云下载（提取码：）
+本次WGCNA的代码结合了生信技能树和PlantTech的WGCNA教程，原始数据也来自这两个教程，其中PlantTech课程是收费课程，我已将其下载，大家有需要可以去[百度云](https://pan.baidu.com/s/114dcfZho2t6pt3XOhkYXtg)下载（提取码：es41）
 
 视频压缩包解压密码是我博客about界面下的一行小字（出自《蒲公英女孩》，标点是英文），如果链接炸了去博客找我联系方式。
